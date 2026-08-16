@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Untuk Kelda ❤️ — Happy 33rd Birthday!</title>
+  <meta name="description" content="Sebuah kartu ucapan ulang tahun digital interaktif premium dan sinematik yang dibuat khusus untuk Kelda.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/card-3d.css">
+  <link rel="stylesheet" href="css/cake.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Background Particle & Canvas Layers -->
+  <canvas id="particle-canvas"></canvas>
+  <div id="light-burst" class="light-burst-overlay"></div>
+  <div id="dark-room" class="dark-room-overlay"></div>
+
+  <!-- Floating Balloons Layer -->
+  <div id="celebration-balloons" class="celebration-balloons">
+    <div class="balloon balloon-gold"></div>
+    <div class="balloon balloon-rose"></div>
+    <div class="balloon balloon-purple"></div>
+    <div class="balloon balloon-champagne"></div>
+  </div>
+
+  <!-- Top Floating HUD -->
+  <header class="top-hud">
+    <div class="brand-badge">
+      <span class="gem-icon">✨</span>
+      <span>16 Agustus 2026 • 33 Tahun</span>
+    </div>
+    <div class="hud-actions">
+      <button id="audio-toggle-btn" class="audio-toggle-btn" aria-label="Toggle Musik Suasana">
+        <div class="audio-equalizer">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span id="audio-status-text">Musik: Autoplay</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Ambient Music Toast Notification -->
+  <div id="music-hint-toast" class="music-hint-toast">
+    <span>🎵 Musik ambient & efek suara diaktifkan</span>
+  </div>
+
+  <!-- Main App Shell -->
+  <main class="app-container">
+
+    <!-- ====================================================================
+         SCENE 1: OPENING 3D BIRTHDAY CARD (State 1 & 2)
+         ==================================================================== -->
+    <section id="scene-opening" class="scene active" aria-label="Kartu Ulang Tahun">
+      <div class="card-scene-wrapper">
+        <div id="main-card" class="card-3d">
+          <div class="card-shadow-layer"></div>
+          <div class="card-inner">
+            
+            <!-- Base / Inside Face -->
+            <div class="card-base">
+              <div class="base-sparkle-glow"></div>
+            </div>
+
+            <!-- Front Cover (3D Flippable) -->
+            <div class="card-cover">
+              <div class="card-shine"></div>
+              <div class="cover-border-frame"></div>
+              
+              <!-- Corner Ornaments -->
+              <span class="cover-corner-ornament top-left"></span>
+              <span class="cover-corner-ornament top-right"></span>
+              <span class="cover-corner-ornament bottom-left"></span>
+              <span class="cover-corner-ornament bottom-right"></span>
+
+              <!-- Top Ribbon -->
+              <div class="cover-top-ribbon">
+                <span class="cover-badge-date">16 • 08 • 2026</span>
+              </div>
+
+              <!-- Center Wax Seal & Typography -->
+              <div class="cover-center-art">
+                <div class="wax-seal">
+                  <span class="wax-seal-icon">🎂</span>
+                </div>
+                <h1 class="cover-title">Untuk Kelda ❤️</h1>
+                <p class="cover-subtitle">Sebuah kejutan kecil untuk kakak tercinta</p>
+              </div>
+
+              <!-- Footer CTA -->
+              <div class="cover-footer">
+                <div class="tap-indicator">
+                  <i data-lucide="sparkles"></i>
+                  <span>Klik untuk membuka</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCENE 2: PARCHMENT BIRTHDAY LETTER (State 3 & 4)
+         ==================================================================== -->
+    <section id="scene-letter" class="scene" aria-label="Surat Ucapan Ulang Tahun">
+      <div id="letter-wrapper" class="letter-wrapper">
+        <article class="parchment-letter">
+          
+          <header class="letter-header">
+            <h2 class="letter-title">
+              Selamat Ulang Tahun,<br>
+              <span class="highlight">Kelda! 🎉❤️</span>
+            </h2>
+            <div class="letter-divider">
+              <span></span>
+              <i data-lucide="heart"></i>
+              <span></span>
+            </div>
+          </header>
+
+          <div class="letter-body">
+            <p class="letter-paragraph quote-lead">
+              Selamat ulang tahun, Kelda ❤️
+            </p>
+
+            <p class="letter-paragraph">
+              Semoga panjang umur, selalu diberikan kesehatan, dimudahkan dalam setiap urusan, diberikan kebahagiaan yang banyak, dan semua hal baik selalu datang menghampiri.
+            </p>
+
+            <p class="letter-paragraph">
+              Semoga di umur yang baru ini, semakin banyak hal indah yang terjadi, semakin banyak alasan untuk tersenyum, dan semua yang Kelda impikan pelan-pelan bisa menjadi kenyataan.
+            </p>
+
+            <p class="letter-paragraph">
+              Tetap jadi Kelda yang selalu kuat, baik, dan menjadi kakak yang luar biasa.
+            </p>
+
+            <p class="letter-paragraph closing-cheer">
+              Semoga hari ini menjadi hari yang spesial dan penuh kebahagiaan.<br>
+              <strong>Happy Birthday, Kelda! ❤️</strong>
+            </p>
+          </div>
+
+          <footer id="letter-footer" class="letter-footer">
+            <button id="btn-surprise-reveal" class="btn-luxury" type="button">
+              <span>Masih ada satu kejutan lagi... ✨</span>
+            </button>
+          </footer>
+
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCENE 3: 3D CAKE, CANDLE 33 & CELEBRATION (State 5 - 9)
+         ==================================================================== -->
+    <section id="scene-cake" class="scene" aria-label="Kue Ulang Tahun & Lilin 33">
+      <div class="cake-scene-container">
+
+        <!-- Ambient Candle Glow -->
+        <div class="cake-ambient-glow"></div>
+
+        <!-- 3D Birthday Cake Stage -->
+        <div id="cake-stage" class="cake-stage">
+          
+          <!-- "33" Number Candles -->
+          <div class="candles-container">
+            <!-- Left Digit '3' -->
+            <div class="number-candle">
+              <div class="flame-wrapper">
+                <div class="candle-flame"></div>
+              </div>
+              <div class="smoke-trail"></div>
+              <div class="candle-wick"></div>
+              <div class="candle-digit">3</div>
+            </div>
+
+            <!-- Right Digit '3' -->
+            <div class="number-candle">
+              <div class="flame-wrapper">
+                <div class="candle-flame"></div>
+              </div>
+              <div class="smoke-trail"></div>
+              <div class="candle-wick"></div>
+              <div class="candle-digit">3</div>
+            </div>
+          </div>
+
+          <!-- Cake Layers -->
+          <div class="cake-body">
+            
+            <!-- Top Strawberry Tier -->
+            <div class="cake-tier-top">
+              <div class="cream-piping-row">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="cake-sprinkles"></div>
+            </div>
+
+            <!-- Bottom Chocolate Tier -->
+            <div class="cake-tier-bottom">
+              <div class="cake-drips-bottom"></div>
+              <div class="cream-piping-row">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="cake-sprinkles"></div>
+            </div>
+
+          </div>
+
+          <!-- Golden Cake Stand / Plate -->
+          <div class="cake-plate"></div>
+        </div>
+
+        <!-- Blow Candle Interactive Controls (State 7) -->
+        <div class="blow-interaction-card">
+          <h3 class="blow-title-prompt">Tiup lilinnya, Kelda 🎂</h3>
+          <div id="mic-status" class="mic-status-indicator">
+            <span class="mic-pulse-dot"></span>
+            <span>Deteksi hembusan mic aktif / Tekan tombol</span>
+          </div>
+          <button id="btn-blow-candle" class="btn-luxury btn-luxury-rose btn-blow-candle" type="button">
+            <span>🎂 Tiup Lilin</span>
+          </button>
+        </div>
+
+        <!-- Grand Celebration & Final Message (State 8 & 9) -->
+        <div id="celebration-overlay" class="celebration-overlay">
+          <div class="celebration-card">
+            
+            <h2 class="celebration-heading shimmer-text">
+              Happy 33rd Birthday,<br>Kelda! 🎉❤️
+            </h2>
+
+            <p class="celebration-wish">
+              "Semoga semua harapan baik Kelda satu per satu menjadi kenyataan."
+            </p>
+
+            <div class="final-message-box">
+              <h3 class="final-lead">Untuk Kelda ❤️</h3>
+              <p class="final-body-text">
+                Semoga umur 33 ini membawa lebih banyak kebahagiaan, kesehatan, ketenangan, dan hal-hal baik.
+              </p>
+              <p class="final-closing-love">Selamat ulang tahun, Kelda. ❤️</p>
+              <p class="final-signature">— dari ade</p>
+            </div>
+
+            <div class="celebration-actions">
+              <button id="btn-replay" class="btn-luxury" type="button">
+                <i data-lucide="rotate-ccw"></i>
+                <span>Putar Ulang Kenangan ↺</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- External Libraries via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/card-tilt.js"></script>
+  <script src="js/mic-blow.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // Initialize Lucide SVG Icons
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

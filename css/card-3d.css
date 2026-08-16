@@ -1,0 +1,475 @@
+/* ==========================================================================
+   CARD-3D.CSS - 3D Card Mechanics, Opening Physics & Parchment Letter
+   ========================================================================== */
+
+.card-scene-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 580px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+/* 3D Card Main Object */
+.card-3d {
+  position: relative;
+  width: min(360px, 86vw);
+  height: min(510px, 78vh);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform 0.6s var(--ease-smooth), box-shadow 0.6s ease;
+  will-change: transform;
+}
+
+/* Card Outer Shell with Soft Ambient 3D Shadow */
+.card-shadow-layer {
+  position: absolute;
+  inset: 15px 15px -15px -15px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(25px);
+  transform: translateZ(-50px);
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+/* The Card Body Container */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  border-radius: 20px;
+}
+
+/* Base Backing (Inside Right Face of the Card) */
+.card-base {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #181c2e 0%, #101322 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 20px;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.card-base::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px dashed rgba(212, 175, 55, 0.25);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+/* The Folding Front Cover (Opens to the left) */
+.card-cover {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 75% 20%, rgba(225, 29, 72, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.2) 0%, transparent 40%),
+    linear-gradient(145deg, #1e243d 0%, #131728 50%, #0d101d 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.5);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.35, 1), box-shadow 0.8s ease;
+  z-index: 5;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 25px;
+  text-align: center;
+}
+
+/* Card Spine Shadow */
+.card-cover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 18px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Card Specular Shine reacting to tilt */
+.card-shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.18) 0%, transparent 60%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  z-index: 8;
+  border-radius: 20px;
+  transition: opacity 0.3s ease;
+}
+
+/* Card Inner Geometry & Ornaments */
+.cover-border-frame {
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.cover-corner-ornament {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: var(--gold-primary);
+  border-style: solid;
+  opacity: 0.65;
+}
+.cover-corner-ornament.top-left { top: 18px; left: 18px; border-width: 2px 0 0 2px; }
+.cover-corner-ornament.top-right { top: 18px; right: 18px; border-width: 2px 2px 0 0; }
+.cover-corner-ornament.bottom-left { bottom: 18px; left: 18px; border-width: 0 0 2px 2px; }
+.cover-corner-ornament.bottom-right { bottom: 18px; right: 18px; border-width: 0 2px 2px 0; }
+
+/* Cover Header / Ribbon */
+.cover-top-ribbon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+
+.cover-badge-date {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+/* Cover Center Icon / Wax Seal / Monogram */
+.cover-center-art {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  z-index: 2;
+}
+
+.wax-seal {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f43f5e 0%, #b91c1c 65%, #7f1d1d 100%);
+  box-shadow: 
+    0 10px 25px rgba(185, 28, 28, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: 2px solid rgba(254, 205, 211, 0.3);
+  animation: sealPulse 4s infinite ease-in-out;
+}
+
+.wax-seal::after {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+}
+
+.wax-seal-icon {
+  font-size: 2.2rem;
+  color: #fff1f2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  background: var(--gold-text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  margin-bottom: 6px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.cover-subtitle {
+  font-family: var(--font-script);
+  font-size: 1.55rem;
+  color: var(--rose-soft);
+  opacity: 0.95;
+  letter-spacing: 0.05em;
+}
+
+/* Cover Footer / Call to action */
+.cover-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+
+.tap-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--gold-light);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  animation: bounceHint 2s infinite ease-in-out;
+}
+
+.tap-indicator svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold-primary);
+}
+
+/* CARD OPENED STATE CLASS */
+.card-3d.is-open .card-cover {
+  transform: rotateY(-140deg);
+  box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.card-3d.is-open .tap-indicator {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   THE PARCHMENT LETTER (Kertas Ucapan Keluar)
+   ========================================================================== */
+.letter-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.parchment-letter {
+  position: relative;
+  width: min(420px, 92vw);
+  max-height: 88vh;
+  background: 
+    radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(225, 29, 72, 0.05) 0%, transparent 35%),
+    linear-gradient(175deg, #fffefb 0%, #faf3e5 50%, #f4ebd6 100%);
+  border-radius: 18px;
+  padding: 34px 28px 28px;
+  color: var(--paper-text);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.65),
+    0 10px 25px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(212, 175, 55, 0.15),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.4);
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform: translateY(60px) scale(0.85) rotateX(15deg);
+  opacity: 0;
+  pointer-events: auto;
+  transition: transform 0.9s var(--ease-spring), opacity 0.7s var(--ease-smooth), box-shadow 0.4s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-primary) transparent;
+}
+
+.parchment-letter::-webkit-scrollbar {
+  width: 4px;
+}
+.parchment-letter::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 4px;
+}
+
+/* Letter Texture Overlay */
+.parchment-letter::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(184, 134, 11, 0.28);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* Letter Active / Emerged State */
+.letter-wrapper.revealed .parchment-letter {
+  transform: translateY(0) scale(1) rotateX(0deg);
+  opacity: 1;
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.75),
+    0 0 40px rgba(212, 175, 55, 0.2),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.5);
+}
+
+/* Letter Typography & Layout */
+.letter-header {
+  text-align: center;
+  margin-bottom: 22px;
+  position: relative;
+}
+
+.letter-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #1f1b18;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.letter-title .highlight {
+  background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.letter-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0 18px;
+}
+
+.letter-divider span {
+  height: 1px;
+  width: 45px;
+  background: linear-gradient(90deg, transparent, var(--paper-gold), transparent);
+}
+
+.letter-divider svg {
+  color: var(--rose-primary);
+  font-size: 0.9rem;
+}
+
+/* Letter Paragraphs with Staggered Reveal */
+.letter-body {
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: #3b322f;
+  margin-bottom: 24px;
+}
+
+.letter-paragraph {
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(4px);
+  transition: opacity 0.8s ease, transform 0.8s var(--ease-spring), filter 0.8s ease;
+}
+
+.letter-paragraph.visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+
+.letter-body .quote-lead {
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #1a1614;
+}
+
+.letter-body .closing-cheer {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.12rem;
+  color: #991b1b;
+  margin-top: 18px;
+  text-align: center;
+}
+
+/* Letter Footer Action */
+.letter-footer {
+  text-align: center;
+  padding-top: 10px;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.8s ease;
+}
+
+.letter-footer.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Keyframes */
+@keyframes sealPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 25px rgba(185, 28, 28, 0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 12px 35px rgba(225, 29, 72, 0.7); }
+}
+
+@keyframes bounceHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 480px) {
+  .card-scene-wrapper {
+    height: 520px;
+  }
+  .card-3d {
+    width: 320px;
+    height: 470px;
+  }
+  .card-cover {
+    padding: 25px 18px;
+  }
+  .cover-title {
+    font-size: 1.6rem;
+  }
+  .wax-seal {
+    width: 78px;
+    height: 78px;
+    margin-bottom: 14px;
+  }
+  .parchment-letter {
+    padding: 26px 18px 20px;
+    max-height: 84vh;
+  }
+  .letter-title {
+    font-size: 1.35rem;
+  }
+  .letter-body {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+}

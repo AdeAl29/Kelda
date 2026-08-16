@@ -1,0 +1,208 @@
+/* ==========================================================================
+   ANIMATIONS.CSS - High-Performance Cinematic FX, Light Bursts & Floating Magic
+   ========================================================================== */
+
+/* Flash / Light Burst Transition Screen */
+.light-burst-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #fffbeb 0%, #fef3c7 40%, rgba(212, 175, 55, 0.4) 70%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 90;
+  transition: opacity 0.8s ease-out;
+  mix-blend-mode: screen;
+}
+
+.light-burst-overlay.burst {
+  opacity: 1;
+}
+
+/* Dark Room Vignette Transition */
+.dark-room-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 80;
+  transition: opacity 1.2s ease-in-out;
+}
+
+.dark-room-overlay.dimmed {
+  opacity: 0.92;
+}
+
+/* Floating Hearts & Stars Ambient Spawners */
+.floating-elements-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 4;
+}
+
+.floating-icon {
+  position: absolute;
+  color: var(--gold-light);
+  opacity: 0;
+  animation: floatUpward 12s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+}
+
+.floating-icon.heart {
+  color: #fda4af;
+  filter: drop-shadow(0 0 8px rgba(225, 29, 72, 0.5));
+}
+
+@keyframes floatUpward {
+  0% {
+    transform: translateY(110vh) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-20vh) scale(1.1) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Shimmer & Golden Dust on Headings */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #fae29c 0%,
+    #ffffff 25%,
+    #c99e32 50%,
+    #ffffff 75%,
+    #fae29c 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 4s linear infinite;
+}
+
+@keyframes textShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Smooth Entrance Classes */
+.fade-in-up {
+  animation: fadeInUp 0.9s var(--ease-spring) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.zoom-in-spin {
+  animation: zoomInSpin 1.2s var(--ease-spring) forwards;
+}
+
+@keyframes zoomInSpin {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Floating Balloons Layer */
+.celebration-balloons {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 35;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease, visibility 1s;
+}
+
+.celebration-balloons.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.balloon {
+  position: absolute;
+  bottom: -150px;
+  width: 50px;
+  height: 65px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  box-shadow: inset -5px -5px 12px rgba(0, 0, 0, 0.35), inset 5px 5px 12px rgba(255, 255, 255, 0.4);
+  animation: balloonRise 10s ease-in infinite;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.balloon-gold {
+  background: radial-gradient(circle at 35% 30%, #fef08a 0%, #eab308 60%, #a16207 100%);
+  left: 15%;
+  animation-duration: 9s;
+  animation-delay: 0.5s;
+}
+
+.balloon-rose {
+  background: radial-gradient(circle at 35% 30%, #fda4af 0%, #f43f5e 60%, #9f1239 100%);
+  left: 35%;
+  animation-duration: 11s;
+  animation-delay: 1.5s;
+}
+
+.balloon-purple {
+  background: radial-gradient(circle at 35% 30%, #d8b4fe 0%, #9333ea 60%, #581c87 100%);
+  left: 70%;
+  animation-duration: 10s;
+  animation-delay: 0.2s;
+}
+
+.balloon-champagne {
+  background: radial-gradient(circle at 35% 30%, #ffedd5 0%, #f59e0b 60%, #78350f 100%);
+  left: 85%;
+  animation-duration: 12s;
+  animation-delay: 2s;
+}
+
+@keyframes balloonRise {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-130vh) rotate(15deg);
+    opacity: 0;
+  }
+}

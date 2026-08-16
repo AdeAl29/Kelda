@@ -1,0 +1,607 @@
+/* ==========================================================================
+   CAKE.CSS - 3D Birthday Cake, Realistic "33" Candle Flames & Smoke Simulation
+   ========================================================================== */
+
+.cake-scene-container {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  z-index: 25;
+}
+
+/* ==========================================================================
+   CAKE STAGE & LIGHTING WRAPPER
+   ========================================================================== */
+.cake-stage {
+  position: relative;
+  width: 320px;
+  height: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 25px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease-smooth);
+}
+
+/* Ambient Radial Glow from the Cake & Candles */
+.cake-ambient-glow {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.28) 0%, rgba(245, 158, 11, 0.12) 40%, transparent 70%);
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  animation: ambientPulsate 3s infinite ease-in-out;
+}
+
+.candle-extinguished .cake-ambient-glow {
+  opacity: 0.1;
+  transform: translateX(-50%) scale(0.7);
+}
+
+/* Base Cake Stand / Plate */
+.cake-plate {
+  position: absolute;
+  bottom: 0;
+  width: 320px;
+  height: 32px;
+  background: linear-gradient(180deg, #fef08a 0%, #d4af37 40%, #854d0e 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.7),
+    0 10px 20px rgba(0, 0, 0, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+.cake-plate::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  right: 10px;
+  bottom: 4px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #fffbeb 0%, #fef3c7 60%, #eab308 100%);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   CAKE TIERS (3D Layered Styling)
+   ========================================================================== */
+.cake-body {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+  bottom: 12px;
+}
+
+/* Bottom Tier - Velvet Chocolate & Gold Accent */
+.cake-tier-bottom {
+  position: relative;
+  width: 250px;
+  height: 95px;
+  background: linear-gradient(180deg, #451a03 0%, #290e02 50%, #1a0801 100%);
+  border-radius: 20px 20px 30px 30px;
+  box-shadow: 
+    inset 0 10px 15px rgba(255, 255, 255, 0.08),
+    inset 0 -10px 20px rgba(0, 0, 0, 0.7),
+    0 8px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+}
+
+/* Bottom Tier Top Frosting Ellipse */
+.cake-tier-bottom::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  width: 250px;
+  height: 36px;
+  background: radial-gradient(ellipse at center, #854d0e 0%, #3f1a04 70%, #271003 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.2);
+}
+
+/* Chocolate Drips on Bottom Tier */
+.cake-drips-bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background-image: radial-gradient(circle at 15px 0px, #78350f 14px, transparent 15px),
+                    radial-gradient(circle at 45px 0px, #78350f 18px, transparent 19px),
+                    radial-gradient(circle at 80px 0px, #78350f 12px, transparent 13px),
+                    radial-gradient(circle at 115px 0px, #78350f 20px, transparent 21px),
+                    radial-gradient(circle at 150px 0px, #78350f 15px, transparent 16px),
+                    radial-gradient(circle at 185px 0px, #78350f 22px, transparent 23px),
+                    radial-gradient(circle at 220px 0px, #78350f 14px, transparent 15px);
+  background-repeat: repeat-x;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* Top Tier - Strawberry Rose & Vanilla Frosting */
+.cake-tier-top {
+  position: relative;
+  width: 180px;
+  height: 80px;
+  background: linear-gradient(180deg, #be123c 0%, #881337 50%, #4c0519 100%);
+  border-radius: 16px 16px 24px 24px;
+  box-shadow: 
+    inset 0 8px 12px rgba(255, 255, 255, 0.15),
+    inset 0 -8px 16px rgba(0, 0, 0, 0.7),
+    0 6px 15px rgba(0, 0, 0, 0.5);
+  margin-bottom: -10px;
+  z-index: 4;
+}
+
+/* Top Tier Frosting Lid */
+.cake-tier-top::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  width: 180px;
+  height: 32px;
+  background: radial-gradient(ellipse at center, #f43f5e 0%, #be123c 70%, #881337 100%);
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 3px 6px rgba(255, 255, 255, 0.35),
+    0 0 15px rgba(244, 63, 94, 0.4);
+}
+
+/* Cream Dollops & Pearls */
+.cream-piping-row {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 8px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.cream-piping-row span {
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 35% 30%, #fffdfa 0%, #fef3c7 60%, #e2b744 100%);
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), inset 0 -2px 3px rgba(180, 83, 9, 0.4);
+}
+
+/* Sprinkles & Star Dust */
+.cake-sprinkles {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle, #fef08a 2px, transparent 2px),
+    radial-gradient(circle, #fda4af 2px, transparent 2px),
+    radial-gradient(circle, #ffffff 1.5px, transparent 1.5px);
+  background-size: 30px 30px, 45px 45px, 20px 20px;
+  background-position: 0 0, 15px 15px, 8px 8px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   "33" NUMBER CANDLES
+   ========================================================================== */
+.candles-container {
+  position: absolute;
+  bottom: 196px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  z-index: 10;
+}
+
+.number-candle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Candle Wick */
+.candle-wick {
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(180deg, #18181b 0%, #52525b 80%, #ffffff 100%);
+  border-radius: 2px;
+  margin-bottom: -2px;
+  position: relative;
+  z-index: 2;
+}
+
+/* 3D Candle Digit "3" */
+.candle-digit {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #fef08a 25%, #f59e0b 60%, #b45309 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 12px rgba(251, 191, 36, 0.5));
+  transform: translateZ(10px);
+}
+
+.candle-digit::after {
+  content: '3';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* Small anchor base under candle */
+.number-candle::after {
+  content: '';
+  width: 14px;
+  height: 4px;
+  background: linear-gradient(180deg, #d97706 0%, #78350f 100%);
+  border-radius: 2px;
+  margin-top: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   REALISTIC CANDLE FLAME ANIMATION
+   ========================================================================== */
+.flame-wrapper {
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 38px;
+  pointer-events: none;
+  z-index: 12;
+  transition: transform 0.4s ease, opacity 0.5s ease;
+}
+
+/* The Flame Teardrop */
+.candle-flame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 50% 85%, #60a5fa 0%, #3b82f6 20%, transparent 40%),
+    radial-gradient(ellipse at 50% 60%, #ffffff 0%, #fef08a 30%, #f59e0b 65%, #ea580c 95%, rgba(220, 38, 38, 0) 100%);
+  border-radius: 50% 50% 35% 35% / 80% 80% 30% 30%;
+  box-shadow: 
+    0 0 15px rgba(251, 191, 36, 0.9),
+    0 -10px 25px rgba(249, 115, 22, 0.6),
+    0 -20px 40px rgba(239, 68, 68, 0.4);
+  transform-origin: center bottom;
+  animation: naturalFlicker 1.8s infinite alternate ease-in-out;
+}
+
+/* Inner Flame Core */
+.candle-flame::before {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 14px;
+  background: radial-gradient(ellipse at center, #ffffff 0%, #93c5fd 60%, transparent 100%);
+  border-radius: 50% 50% 30% 30% / 80% 80% 30% 30%;
+  opacity: 0.9;
+}
+
+/* Dynamic Flame Heat Aura */
+.candle-flame::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: heatAura 2s infinite ease-in-out;
+}
+
+/* Candle Smoke Trail (Appears when blown out) */
+.smoke-trail {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 35px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.candle-extinguished .flame-wrapper {
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+}
+
+.candle-extinguished .smoke-trail {
+  opacity: 0.85;
+  animation: smokeWisp 2.5s forwards ease-out;
+}
+
+/* ==========================================================================
+   BLOW CANDLE INTERACTION CONTROLS
+   ========================================================================== */
+.blow-interaction-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 15px;
+  z-index: 30;
+  text-align: center;
+  transition: all 0.6s var(--ease-smooth);
+}
+
+.blow-title-prompt {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  letter-spacing: 0.02em;
+}
+
+.mic-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: rgba(254, 243, 199, 0.8);
+  background: rgba(20, 24, 38, 0.6);
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.mic-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: micBlink 1.5s infinite;
+}
+
+.mic-listening .mic-pulse-dot {
+  background: #3b82f6;
+  box-shadow: 0 0 10px #3b82f6;
+}
+
+.btn-blow-candle {
+  padding: 16px 42px;
+  font-size: 1.15rem;
+  box-shadow: 0 10px 30px rgba(225, 29, 72, 0.4), 0 0 25px rgba(245, 158, 11, 0.3);
+  animation: blowBtnPulse 2.5s infinite ease-in-out;
+}
+
+/* Post-Extinguish Hidden Status */
+.candle-extinguished .blow-interaction-card {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   POST-BLOW CELEBRATION BANNER & FINAL MESSAGES
+   ========================================================================== */
+.celebration-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 40;
+  padding: 20px;
+  transition: opacity 1s var(--ease-cinematic), visibility 1s;
+}
+
+.celebration-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.celebration-card {
+  position: relative;
+  width: min(480px, 94vw);
+  background: rgba(14, 18, 30, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 24px;
+  padding: 38px 28px;
+  text-align: center;
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(212, 175, 55, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transform: translateY(30px) scale(0.92);
+  transition: transform 1s var(--ease-spring);
+}
+
+.celebration-overlay.active .celebration-card {
+  transform: translateY(0) scale(1);
+}
+
+.celebration-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 900;
+  background: var(--gold-text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  text-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+}
+
+.celebration-wish {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--rose-soft);
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.final-message-box {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 22px 18px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  margin-bottom: 25px;
+}
+
+.final-lead {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--gold-light);
+  margin-bottom: 10px;
+}
+
+.final-body-text {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.final-closing-love {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.12rem;
+  color: #fb7185;
+  margin-bottom: 6px;
+}
+
+.final-signature {
+  font-family: var(--font-script);
+  font-size: 1.8rem;
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+}
+
+.celebration-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   ANIMATION KEYFRAMES
+   ========================================================================== */
+@keyframes naturalFlicker {
+  0% { transform: scale(1, 1) rotate(-1.5deg); }
+  25% { transform: scale(1.08, 0.95) rotate(2deg); }
+  50% { transform: scale(0.96, 1.05) rotate(-1deg); }
+  75% { transform: scale(1.04, 1.02) rotate(1.5deg); }
+  100% { transform: scale(1, 1) rotate(0deg); }
+}
+
+@keyframes heatAura {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.25); opacity: 0.5; }
+}
+
+@keyframes ambientPulsate {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.25; }
+  50% { transform: translateX(-50%) scale(1.15); opacity: 0.45; }
+}
+
+@keyframes smokeWisp {
+  0% { transform: translateX(-50%) translateY(0) scale(0.6); opacity: 0.9; }
+  50% { transform: translateX(-70%) translateY(-25px) scale(1.4); opacity: 0.6; filter: blur(2px); }
+  100% { transform: translateX(-30%) translateY(-55px) scale(2.2); opacity: 0; filter: blur(5px); }
+}
+
+@keyframes blowBtnPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(225, 29, 72, 0.4), 0 0 25px rgba(245, 158, 11, 0.3); }
+  50% { transform: scale(1.04); box-shadow: 0 15px 40px rgba(225, 29, 72, 0.6), 0 0 35px rgba(245, 158, 11, 0.5); }
+}
+
+@keyframes micBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .cake-stage {
+    width: 270px;
+    height: 290px;
+  }
+  .cake-plate {
+    width: 270px;
+  }
+  .cake-tier-bottom {
+    width: 210px;
+    height: 80px;
+  }
+  .cake-tier-bottom::before {
+    width: 210px;
+  }
+  .cake-tier-top {
+    width: 150px;
+    height: 70px;
+  }
+  .cake-tier-top::before {
+    width: 150px;
+  }
+  .candle-digit {
+    font-size: 2.7rem;
+  }
+  .candles-container {
+    bottom: 168px;
+    top: auto;
+    gap: 6px;
+  }
+  .blow-title-prompt {
+    font-size: 1.25rem;
+  }
+  .celebration-card {
+    padding: 26px 18px;
+    border-radius: 20px;
+  }
+  .final-message-box {
+    padding: 16px 12px;
+  }
+  .final-body-text {
+    font-size: 0.9rem;
+  }
+}
